@@ -2,7 +2,8 @@ import re
 import json
 import os
 import gc
-freeDbDir = "/home/think/Code/music-visualizer/data"
+#freeDbDir = "/home/think/Code/music-visualizer/data"
+freeDbDir = "/home/jr/share/python/music-visualizer/freeDB"
 
 class Song:
     def __init__(self,Title,Artist,Album,Number,Genre,Year,DISCID):
@@ -110,6 +111,7 @@ def dumper(obj):
         return obj.__dict__
 
 i = 0
+num = 0
 # Albums = {}
 for root, subFolders, files in os.walk(freeDbDir):
     Artists = {}
@@ -123,11 +125,18 @@ for root, subFolders, files in os.walk(freeDbDir):
             for song in tmpInfo['AlbumSongs']:
                 if song['Artist'] in Artists:
                     Artists[song['Artist']]["Songs"].append(song)
+                    num+=1
                 else:
                     Artists[song['Artist']] = {}
                     Artists[song['Artist']]["Songs"] = [song]
+                    num+=1
         except UnicodeDecodeError:
             continue
+        if num >10000:
+            tmp = json.dumps(Artists, default=dumper, indent=4)
+            with open("json/Artists{}.json".format(i),'w') as json_file:
+                json_file.write(tmp)
+            i+=1
     tmp = json.dumps(Artists, default=dumper, indent=4)
     with open("json/Artists{}.json".format(i),'w') as json_file:
         json_file.write(tmp)
