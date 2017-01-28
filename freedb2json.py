@@ -4,13 +4,14 @@ import os
 freeDbDir = "/home/jr/share/python/music-visualizer/freeDB"
 
 class Song:
-    def __init__(self,Title,Artist,Album,Number,Genre,Year):
+    def __init__(self,Title,Artist,Album,Number,Genre,Year,DISCID):
         self.Title = Title
         self.Artist = Artist
         self.Album = Album
         self.Number = Number
         self.Genre = Genre
         self.Year = Year
+        self.DiscId = DISCID
 
     def __str__(self):
      return "Artist:{}, Title:{}, Album:{}, Number:{}, Genre:{}, Year:{}".format(
@@ -78,7 +79,11 @@ def parseFile(freeDbFile):
             if 'AlbumYear' in info:
                 year = info['AlbumYear']
 
-            song = Song(songTitle,Artist,albumTitle,number,genre,year)
+            discId = None
+            if 'DISCID' in info:
+                discId = info['DISCID']
+
+            song = Song(songTitle,Artist,albumTitle,number,genre,year,discId)
             info['AlbumSongs'].append(song)
 
         else:
