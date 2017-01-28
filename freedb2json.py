@@ -1,7 +1,8 @@
 import re
 import json
 import os
-freeDbDir = "/home/jr/share/python/music-visualizer/freeDB"
+import gc
+freeDbDir = "/home/think/Code/music-visualizer/data"
 
 class Song:
     def __init__(self,Title,Artist,Album,Number,Genre,Year,DISCID):
@@ -112,9 +113,11 @@ i = 0
 # Albums = {}
 for root, subFolders, files in os.walk(freeDbDir):
     Artists = {}
+    gc.collect()
+    print(str(i))
     for f in files:
         fullPath =os.path.join(root, f)
-        print("file:{}".format(fullPath))
+        #print("file:{}".format(fullPath))
         try:
             tmpInfo = parseFile(fullPath)
             for song in tmpInfo['AlbumSongs']:
