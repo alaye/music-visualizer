@@ -20,8 +20,6 @@ class Song:
     #     return json.dumps(self, default=lambda o: o.__dict__,
     #         sort_keys=True, indent=4)
 
-Artists = {}
-# Albums = {}
 
 def parseFile(freeDbFile):
     info = {}
@@ -89,10 +87,20 @@ def parseFile(freeDbFile):
             info[key] = value
     return info
 
+
+def dumper(obj):
+    try:
+        return obj.toJSON()
+    except:
+        return obj.__dict__
+
+i = 0
+# Albums = {}
 for root, subFolders, files in os.walk(freeDbDir):
+    Artists = {}
     for f in files:
         fullPath =os.path.join(root, f)
-        # print("file:{}".format(fullPath)
+        print("file:{}".format(fullPath))
         try:
             tmpInfo = parseFile(fullPath)
             for song in tmpInfo['AlbumSongs']:
@@ -102,26 +110,22 @@ for root, subFolders, files in os.walk(freeDbDir):
                     Artists[song.Artist] = {}
                     Artists[song.Artist]["Songs"] = [song]
         except UnicodeDecodeError:
-            pass
-
-
+            continue
+    tmp = json.dumps(Artists, default=dumper, indent=4)
+    with open("json/Artists{}.json".format(i),'w') as json_file:
+        json_file.write(tmp)
+    i+=1
 
 # print(str(Artists))
 
     #print "key:{}, val:{}".format(key,value)
     #print line
 
-def dumper(obj):
-    try:
-        return obj.toJSON()
-    except:
-        return obj.__dict__
-tmp = json.dumps(Artists, default=dumper, indent=4)
+
+
 # tmp = json.dumps(info,default=lambda o: o.__dict__,indent = 4,ensure_ascii=False)
 #print tmp
 # with io.open('tmp.json', 'w', encoding='utf8') as json_file:
 #     # data = json.dumps(unicode(tmp), ensure_ascii=False)
 #     # unicode(data) auto-decodes data to unicode if str
 #     json_file.write(unicode(tmp))
-with open('Artists.json','w') as json_file:
-    json_file.write(tmp)
