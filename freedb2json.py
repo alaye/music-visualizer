@@ -2,8 +2,8 @@ import re
 import json
 import os
 import gc
-#freeDbDir = "/home/think/Code/music-visualizer/data"
-freeDbDir = "/home/jr/share/python/music-visualizer/freeDB"
+freeDbDir = "/home/think/Code/music-visualizer/data"
+#freeDbDir = "/home/jr/share/python/music-visualizer/freeDB"
 
 class Song:
     def __init__(self,Title,Artist,Album,Number,Genre,Year,DISCID):
@@ -132,7 +132,7 @@ for root, subFolders, files in os.walk(freeDbDir):
                     num+=1
         except UnicodeDecodeError:
             continue
-        if num >10000:
+        if num >1000000:
             tmp = json.dumps(Artists, default=dumper, indent=4)
             with open("json/Artists{}.json".format(i),'w') as json_file:
                 json_file.write(tmp)
