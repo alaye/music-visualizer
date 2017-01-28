@@ -2,8 +2,8 @@ import re
 import json
 import os
 import gc
-freeDbDir = "/home/think/Code/music-visualizer/data"
-#freeDbDir = "/home/jr/share/python/music-visualizer/freeDB"
+#freeDbDir = "/home/think/Code/music-visualizer/data"
+freeDbDir = "/home/jr/share/python/music-visualizer/freeDB"
 
 class Song:
     def __init__(self,Title,Artist,Album,Number,Genre,Year,DISCID):
@@ -116,7 +116,7 @@ num = 0
 for root, subFolders, files in os.walk(freeDbDir):
     Artists = {}
     gc.collect()
-    print(str(i))
+    print("in {}".format(root))
     for f in files:
         fullPath =os.path.join(root, f)
         #print("file:{}".format(fullPath))
@@ -137,6 +137,10 @@ for root, subFolders, files in os.walk(freeDbDir):
             with open("json/Artists{}.json".format(i),'w') as json_file:
                 json_file.write(tmp)
             i+=1
+            num = 0
+            Artists = {}
+            gc.collect()
+
     tmp = json.dumps(Artists, default=dumper, indent=4)
     with open("json/Artists{}.json".format(i),'w') as json_file:
         json_file.write(tmp)
