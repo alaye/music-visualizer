@@ -44,7 +44,7 @@ window.onload = function() {
 	} else if(this.readyState == 4 && this.status != 200) {
 	    alert("There was an error. status: " +this.status +" state: " + this.readyState)
 	    alert(this.responseText)
-	    window.location = 'https://alaye.github.io/music-visualizer/'
+	    window.location = 'index.html'
 	}
     }
     httpRequest.open('GET', 'http://10.104.246.185:5000/relations/'+artist, true)
