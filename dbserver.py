@@ -5,7 +5,7 @@ import os
 import urllib
 app = Flask(__name__)
 
-jdata = json.load(open("json/Artists1.json"))
+jdata = json.load(open("merged2/Artists1.json"))
 
 @app.route('/')
 def hello_world():
