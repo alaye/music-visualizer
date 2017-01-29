@@ -1,0 +1,18 @@
+body {
+    //background: #241F2F;
+}
+
+form {
+    background: #f00;
+    font-size: 20pt;
+    width: 15em;
+    padding: 15px 10px;
+    position: absolute;
+    margin: auto;
+}
+
+form input {
+    height: 1.8em;
+    margin: 2px;
+    border-radius: 5px;
+}
