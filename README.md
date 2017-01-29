@@ -1,8 +1,13 @@
-# music-visualizer
-Daemon Dash Projecto
+## music-visualizer
+Daemon Dash 2017 Hackathon Project
 
-#What we do
-1) get money <\br> \n
-2) learn how to make line breaks
+##What it does
+This project takes data from FreeDB music database to display a graph of artists who have collaborated together.
+The graph is displayed using D3.js.
 
-#Try it out!
+##Creators
+[John Murray](https://github.com/JohnReillyMurray), 
+[Daniel Evans](https://github.com/dangoat), 
+[Stephan Su](https://github.com/stefansu28), 
+[Alexander Laye](https://github.com/alaye)
+
