@@ -63,7 +63,7 @@ function setup() {
     svg.append('circle')
     for(var name in ArtistList) {
 	var dis = 20, range = 800
-	ArtistList[name].x = Math.random()*range
+	ArtistList[name].x = Math.random()*1000
 	ArtistList[name].y = Math.random()*range
     }
     // Draw the lines
