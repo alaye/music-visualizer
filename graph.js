@@ -27,8 +27,8 @@ function ArtistNode(name, edges) {
 }
 
 // Declerations and onload
-var graph
 var circles
+var artist
 var ArtistList = []
 window.onload = function() {
     artist = sessionStorage.getItem('artist')
@@ -37,7 +37,7 @@ window.onload = function() {
     var httpRequest = new XMLHttpRequest();
     httpRequest.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            console.log(this.responseText)
+            //console.log(this.responseText)
             var list = JSON.parse(this.responseText)
             //var names = []
             for (var name in list) {
@@ -47,6 +47,10 @@ window.onload = function() {
               //      names.push(name.toLowerCase())
               //  }
             }
+	    if(sessionStorage.getItem('partist') !== '' && sessionStorage.getItem('partist') && sessionStorage.getItem('partist') !== artist) {
+		ArtistList[artist].edges.push(sessionStorage.getItem('partist'))
+		ArtistList[sessionStorage.getItem('partist')] = new ArtistNode(sessionStorage.getItem('partist'), [artist])
+	    }
             setup()
         } else if (this.readyState == 4 && this.status != 200) {
             alert("There was an error. status: " + this.status + " state: " + this.readyState)
@@ -177,19 +181,10 @@ function setup() {
         force.alpha(1).restart()
     });
 
-    // circles.on('mousedown', function() {
-    // 	circles.on('mousemove',function(){
-    // 	    var pointer = d3.mouse(this)
-    // 	    var data = d3.select(this).data()[0]
-    // 	    data.ref.update(pointer[0],pointer[1])
-    // 	    for(name in data.ref.edges) {
-    // 		var other = ArtistList[name]
-    // 		other.update(other.x,other.y)
-    // 	    }
-    // 	})
-    // 	circles.on('mouseup', function() {
-    // 	    circles('mousemove',null)
-    // 	    circles('mouseup',null)
-    // 	})
-    // })
+    circles.on('click', function(data) {
+	sessionStorage.setItem('artist', data.ref.name)
+	sessionStorage.setItem('partist', artist)
+	alert(artist)
+	location.reload()
+    })
 }
