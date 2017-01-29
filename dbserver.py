@@ -30,55 +30,85 @@ def get_file(author):
         fin.append(tmp_dict)
     return jsonify({"Songs": fin})
 
+def byteify(input):
+    if isinstance(input, dict):
+        return {byteify(key): byteify(value) for key, value in input.iteritems()}
+    elif isinstance(input, list):
+        return [byteify(element) for element in input]
+    elif isinstance(input, unicode):
+        return input.encode('utf-8')
+    else:
+        return input
+
 @app.route('/relations/', methods=['POST'])
 def relations():
-    artist=request.form['artist']
+    anchor=request.form['artist']
     nodes = []
     edges = []
 
-    anchor = artist
-
     q = [anchor]
-    art = None
 
     while len(q) > 0:
         art = q.pop(0)
         #get song list
-        for song in songlist:
-            #get string of featured artists
-            m = re.match('feat. ([^)]+)')
-            if m:
-                s = m.group()
-                #split into artists
-                lst = s.split(",")
-                if len(lst) > 1:
+        dictionary = get_file(art)
+        #dictionary = byteify(json.loads(response.read()))
+        songlist = []
+        if (dictionary):
+            lst = dictionary["Songs"]
+            for song in lst:
+                songlist.append(song["Title"])
+            for song in songlist:
+                #get string of featured artists
+                m = re.match('.+[fF]eat. ([^)(/]+)', song) 
+                if m:
+                    s = m.group(1)
+                    #split into artists
+                    lst = s.split(",")
                     lstend = (lst.pop()).split("&")
-                    lst = lst.extend(lstend)
-                for a in lst:
-                    a = a.strip()
-                    edges.append((art,a))
-                    if nodes.count(a) == 0:
-                        q.append(a)
-                    for b in lst:
-                        if a != b:
-                            edges.append((a,b))
+                    lst.extend(lstend)
+                    for a in lst:
+                        a = a.strip()
+                        edges.append((art.strip(),a))
+                        if nodes.count(a) == 0:
+                            q.append(a)
+                        for b in lst:
+                            b = b.strip()
+                            if a != b:
+                                edges.append((a,b))
 
-        nodes.append(art)
+        if nodes.count(art) == 0:
+            nodes.append(art.strip())
 
     i = 0
     j = 0
-    while i < len(edges):
+    while i < len(edges)-1:
         j = i+1
         t1 = edges[i]
         while j < len(edges):
             t2 = edges[j]
-            if t1[1] == t2[1] and t1[2] == t2[2]:
-                edges.remove(t2)
-            elif t1[2] == t2[1] and t1[1] == t2[1]:
-                edges
+            if t1[0] == t2[0] and t1[1] == t2[1]:
+                edges.pop(j)
+            elif t1[1] == t2[0] and t1[0] == t2[1]:
+                edges.pop(j)
+            elif t2[0] == t2[1]:
+                edges.pop(j)
             else:
-                j = j + 1
+                j = j + 1        
         i = i + 1
+    
+    adj_hash = {}
+    for n in nodes:
+        elst = []
+        for e in edges:
+            if n == e[0]:
+                elist.append(e[1])
+            elif n == e[1]:
+                elist.append(e[0])
+        adj_hash[n] = elst
+
+                
+
     
 
 if __name__ == '__main__':
