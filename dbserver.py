@@ -107,7 +107,7 @@ def relations():
                 elist.append(e[0])
         adj_hash[n] = elst
 
-                
+     return adj_hash
 
     
 
