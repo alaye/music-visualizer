@@ -1,0 +1,16 @@
+<head>
+    <link href="style.css" rel="stylesheet" type="text/css">
+    <script>
+     function DOS() {
+	 var artist = document.getElementById('name').value
+	 sessionStorage.setItem('artist', artist)
+	 window.location = 'graph.html'
+     }
+    </script>
+</head>
+<body>
+    <form>
+	<input type="text" id="name" placeholder="Enter an Artist Name or Song Name"><br>
+	<input type="button" value="Degree of Seperation" onclick="DOS()"><input type="button" value="Word Bubbles">
+    </form>
+</body>

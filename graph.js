@@ -29,15 +29,41 @@ var graph
 var circles
 var ArtistList = []
 window.onload = function() {
-    ArtistList['Kanye West'] = new ArtistNode('Kanye West', ['Kendrick Lamar'])
-    ArtistList['Kendrick Lamar'] = new ArtistNode('Kendrick Lamar', ['Kanye West', 'DJ Khaled'])
-    ArtistList['DJ Khaled'] = new ArtistNode('DJ Khaled', ['Kanye West'])
-    ArtistList['The Beatles'] = new ArtistNode('The Beatles', ['Kanye West'])
+    artist = sessionStorage.getItem('artist')
+    if(!artist)
+	window.location = 'https://alaye.github.io/music-visualizer/'
+    var httpRequest = new XMLHttpRequest();
+    httpRequest.onreadystatechange = function() {
+	if(this.readyState == 4 && this.status == 200) {
+	    console.log(this.responseText)
+	    var list = JSON.parse(this.responseText)
+	    for(var name in list) {
+		ArtistList[name] = new ArtistNode(name, list[name])
+	    }
+	    setup()
+	} else if(this.readyState == 4 && this.status != 200) {
+	    alert("There was an error. status: " +this.status +" state: " + this.readyState)
+	    alert(this.responseText)
+	    window.location = 'https://alaye.github.io/music-visualizer/'
+	}
+    }
+    httpRequest.open('GET', 'http://10.104.246.185:5000/relations/'+artist, true)
+    // httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    //httpRequest.setRequestHeader("Access-Control-Allow-Origin", "null");
+    // httpRequest.withCredentials = false;
+    httpRequest.send()
+}
+
+function setup() {
+    // ArtistList['Kanye West'] = new ArtistNode('Kanye West', ['Kendrick Lamar'])
+    // ArtistList['Kendrick Lamar'] = new ArtistNode('Kendrick Lamar', ['Kanye West', 'DJ Khaled'])
+    // ArtistList['DJ Khaled'] = new ArtistNode('DJ Khaled', ['Kanye West'])
+    // ArtistList['The Beatles'] = new ArtistNode('The Beatles', ['Kanye West'])
     var svg = d3.select('svg')
     svg.append('circle')
     for(var name in ArtistList) {
 	var dis = 20, range = 800
-	ArtistList[name].x = Math.random()*range
+	ArtistList[name].x = Math.random()*1000
 	ArtistList[name].y = Math.random()*range
     }
     // Draw the lines
