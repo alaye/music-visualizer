@@ -1,16 +1,29 @@
+<!DOCTYPE html>
+<html >
 <head>
-    <link href="style.css" rel="stylesheet" type="text/css">
-    <script>
-     function DOS() {
-	 var artist = document.getElementById('name').value
-	 sessionStorage.setItem('artist', artist)
-	 window.location = 'graph.html'
-     }
-    </script>
+  <meta charset="UTF-8">
+  <title>Artist Feature Graph</title>
+
+
+
+      <link rel="stylesheet" href="style.css">
+          <script>
+           function DOS() {
+      	 var artist = document.getElementById('name').value
+      	 sessionStorage.setItem('artist', artist)
+      	 window.location = 'graph.html'
+           }
+          </script>
 </head>
+
 <body>
-    <form>
-	<input type="text" id="name" placeholder="Enter an Artist Name or Song Name"><br>
-	<input type="button" value="Degree of Seperation" onclick="DOS()"><!--<input type="button" value="Word Bubbles">-->
-    </form>
+  <h1>Daemondash Winning Project</h1>
+
+<div id='container'>
+  <div class='cell'><input type='text'  id="name" placeholder='Enter an Artist Name '></div>
+  <div class='cell'><input type="button" class='button' value="Make Graph" onclick="DOS()"></div>
+</div>
+
+
 </body>
+</html>
