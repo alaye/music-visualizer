@@ -2,8 +2,8 @@ import re
 import json
 import os
 import gc
-#freeDbDir = "/home/think/Code/music-visualizer/data"
-freeDbDir = "/home/jr/share/python/music-visualizer/freeDB"
+freeDbDir = "/home/think/Code/music-visualizer/data"
+#freeDbDir = "/home/jr/share/python/music-visualizer/freeDB"
 
 class Song:
     def __init__(self,Title,Artist,Album,Number,Genre,Year,DISCID):
