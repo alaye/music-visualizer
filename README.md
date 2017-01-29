@@ -6,4 +6,3 @@ Daemon Dash Projecto
 2) learn how to make line breaks
 
 #Try it out!
-https://alaye.github.io/music-visualizer/
