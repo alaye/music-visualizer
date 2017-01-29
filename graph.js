@@ -47,7 +47,7 @@ window.onload = function() {
 	    window.location = 'https://alaye.github.io/music-visualizer/'
 	}
     }
-    httpRequest.open('GET', 'http://10.104.246.185:5000/relations/'+artist, true)
+    httpRequest.open('GET', 'https://10.104.246.185:5000/relations/'+artist, true)
     // httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     //httpRequest.setRequestHeader("Access-Control-Allow-Origin", "null");
     // httpRequest.withCredentials = false;
