@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, Response
 from flask import json, jsonify
 import re
 import os
@@ -40,19 +40,22 @@ def byteify(input):
     else:
         return input
 
-@app.route('/relations/', methods=['POST'])
-def relations():
-    anchor=request.form['artist']
+@app.route('/relations/<author>')
+def relations(author):
+    anchor=urllib.unquote(author).encode("ascii",errors = "backslashreplace")
+    #print "author:{},anchor:{}".format(author,anchor)
     nodes = []
     edges = []
 
     q = [anchor]
 
-    while len(q) > 0:
+    while len(q) > 0 and len(nodes) < 10:
         art = q.pop(0)
+        print art
         #get song list
         dictionary = get_file(art)
-        #dictionary = byteify(json.loads(response.read()))
+        dictionary = (dictionary.get_data())
+        dictionary = byteify(json.loads(dictionary))
         songlist = []
         if (dictionary):
             lst = dictionary["Songs"]
@@ -72,6 +75,7 @@ def relations():
                         edges.append((art.strip(),a))
                         if nodes.count(a) == 0:
                             q.append(a)
+                            nodes.append(a)
                         for b in lst:
                             b = b.strip()
                             if a != b:
@@ -99,16 +103,26 @@ def relations():
     
     adj_hash = {}
     for n in nodes:
+        
         elst = []
         for e in edges:
+            
             if n == e[0]:
-                elist.append(e[1])
+                
+                elst.append(e[1])
             elif n == e[1]:
-                elist.append(e[0])
+                
+                elst.append(e[0])
+                
         adj_hash[n] = elst
-
-     return adj_hash
-
+        
+    resp = Response("")
+    resp.headers['Access-Control-Allow-Origin'] = '*'
+    resp.set_data(json.dumps(adj_hash))
+    resp.mimetype = "application/json"
+    print "returning"
+    return resp
+    #return "Hello"
     
 
 if __name__ == '__main__':
