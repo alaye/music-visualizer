@@ -31,6 +31,7 @@ var circles
 var artist
 var ArtistList = []
 window.onload = function() {
+    var loadimg = document.getElementById('loading')
     artist = sessionStorage.getItem('artist')
     if (!artist)
         window.location = 'index.html'
@@ -51,6 +52,7 @@ window.onload = function() {
 		ArtistList[artist].edges.push(sessionStorage.getItem('partist'))
 		ArtistList[sessionStorage.getItem('partist')] = new ArtistNode(sessionStorage.getItem('partist'), [artist])
 	    }
+	    loadimg.remove()
             setup()
         } else if (this.readyState == 4 && this.status != 200) {
             alert("There was an error. status: " + this.status + " state: " + this.readyState)
@@ -71,11 +73,13 @@ function setup() {
     // ArtistList['DJ Khaled'] = new ArtistNode('DJ Khaled', ['Kanye West'])
     // ArtistList['The Beatles'] = new ArtistNode('The Beatles', ['Kanye West'])
     var svg = d3.select('svg')
+    svg.style('margin', 0)
+    var box = svg.node().getBBox()
     svg.append('circle')
     for (var name in ArtistList) {
         var dis = 20,
             range = 800
-        ArtistList[name].x = Math.random() * 1000
+        ArtistList[name].x = Math.random() * range;
         ArtistList[name].y = Math.random() * range
     }
     // Draw the lines
@@ -184,7 +188,7 @@ function setup() {
     circles.on('click', function(data) {
 	sessionStorage.setItem('artist', data.ref.name)
 	sessionStorage.setItem('partist', artist)
-	alert(artist)
+	//alert(artist)
 	location.reload()
     })
 }
